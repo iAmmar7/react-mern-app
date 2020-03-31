@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const path = require('path');
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: '../sample.env' });
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
@@ -19,13 +19,15 @@ app.getRedis = redisHelper.getRedis;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(fileUpload({
-	limits: {
-		fileSize: 1 * 1024 * 1024,
-	},
-	safeFileNames: true,
-	preserveExtension: true,
-}));
+app.use(
+  fileUpload({
+    limits: {
+      fileSize: 1 * 1024 * 1024,
+    },
+    safeFileNames: true,
+    preserveExtension: true,
+  }),
+);
 
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));

@@ -5,22 +5,28 @@ const url = process.env.MONGO_URI;
 let dbClient = null;
 
 exports.init = () => {
-	console.log(url);
-	mongoose.connect(url, {
-		useNewUrlParser: true,
-		useCreateIndex: true,
-		useUnifiedTopology: true,
-	}).then((mongo) => {
-		const database = mongo.connection.db;
-		if (database && database.collection) {
-			database.collection('threads').createIndex({ title: 'text', description: 'text' }).then().catch((err) => console.log(err));
-		}
-	});
+  console.log('URl', url);
+  mongoose
+    .connect(url, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+    })
+    .then(mongo => {
+      const database = mongo.connection.db;
+      if (database && database.collection) {
+        database
+          .collection('threads')
+          .createIndex({ title: 'text', description: 'text' })
+          .then()
+          .catch(err => console.log(err));
+      }
+    });
 
-	dbClient = mongoose.connection;
+  dbClient = mongoose.connection;
 
-	dbClient.once('open', () => console.log('connected to the database'));
-	dbClient.on('error', (err) => console.log(err));
+  dbClient.once('open', () => console.log('connected to the database'));
+  dbClient.on('error', err => console.log('MongoDB connection error', err));
 };
 
 exports.getDB = () => dbClient;
