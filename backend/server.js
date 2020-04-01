@@ -1,10 +1,13 @@
 /* eslint-disable no-console */
 const path = require('path');
-require('dotenv').config({ path: '../sample.env' });
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const fs = require('fs');
+fs.existsSync('../.env')
+  ? require('dotenv').config({ path: '../.env' })
+  : require('dotenv').config({ path: '../sample.env' });
 
 const app = express();
 const fileUpload = require('express-fileupload');
